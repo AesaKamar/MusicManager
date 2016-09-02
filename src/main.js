@@ -6,6 +6,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 let mainWindow;
+const ipc = electron.ipcMain;
 
 
 /**
@@ -79,7 +80,6 @@ function downloadFromUrl(url, progress) {
         });
 
         video.on('complete', (info) => {
-            'use strict';
             console.log('filename: ' + info._filename + ' already downloaded.');
         });
 
@@ -94,7 +94,7 @@ function downloadFromUrl(url, progress) {
     });
 };
 
-downloadFromUrl(url, 0).then(
-    (res) => { console.log(res); },
-    (err) => { console.log(err); }
-)
+// downloadFromUrl(url, 0).then(
+//     (res) => { console.log(res); },
+//     (err) => { console.log(err); }
+// )

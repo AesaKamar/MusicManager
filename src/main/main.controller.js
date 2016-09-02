@@ -3,8 +3,10 @@
      * MainController
      */
     app.controller('MainController', MainController);
-    MainController.$inject = [];
+    MainController.$inject = ['ipc'];
 
-    function MainController() {}
+    function MainController(ipc) {
+        console.log(ipc);
+    }
 
 })(angular.module('app'));

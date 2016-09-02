@@ -42,3 +42,8 @@ jspm_packages
 
 #VS Code specific files
 .browse.VC*
+
+#Ignore any media files
+*.mp3
+*.mp4
+*.webm
