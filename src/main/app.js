@@ -8,13 +8,14 @@
     require('angular-aria');
     require('angular-material');
     require('angular-ui-router');
+    require('angular-local-storage');
     const electron = require('electron');
 
     /**
      * Initialize angular app
      */
     let app = angular.module(
-        'app', ['ngMaterial', 'ui.router']
+        'app', ['ngMaterial', 'ui.router', 'LocalStorageModule']
     );
 
     /**

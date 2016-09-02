@@ -17,6 +17,8 @@ const Promise = require('bluebird');
 const fs = require('fs');
 const ytdl = require('youtube-dl');
 const ffmpeg = require('fluent-ffmpeg');
+const id3Reader = require('id3js');
+const id3Writer = require('node-id3');
 
 
 /**
@@ -30,10 +32,6 @@ app.on('ready', () => {
     mainWindow.loadURL('file://' + __dirname + '/main/main.html');
     mainWindow.on('closed', () => { mainWindow = null; });
 });
-
-// let url = 'https://www.youtube.com/watch?v=X6X9WWte3nQ';
-let url = 'https://www.youtube.com/watch?v=HDSksIctszk';
-
 
 /**
  * A function that promises to return the info from a file after it is downloaded
@@ -94,7 +92,74 @@ function downloadFromUrl(url, progress) {
     });
 };
 
-// downloadFromUrl(url, 0).then(
-//     (res) => { console.log(res); },
-//     (err) => { console.log(err); }
-// )
+/**
+ * A function that promises to return an mp3's id3 tags'
+ * @param {string} file_path The path to the target mp3
+ * @returns {Promise<object>} tags Contained ID3 tags
+ */
+function getID3Tags(file_path) {
+    return new Promise((resolve, reject) => {
+        id3Reader({ file: file_path, type: id3Reader.OPEN_LOCAL }, function(err, tags) {
+            err ? reject(err) : resolve({ tags: tags, file_path: file_path });
+        });
+    });
+};
+
+/**
+ * A function that promises to return the info from a file after it is downloaded
+ * @param {object} tags An object containing ID3 tags to write
+ * @param {string} file_path The path to the target mp3
+ * @returns {Promise<bool>} success Status of the operation
+ */
+function setID3Tags(tags, file_path) {
+    return new Promise((resolve, reject) => {
+        id3Writer.write(tags, file_path) ? resolve({ tags: tags, file_path: file_path }) : reject(null);
+    });
+};
+
+
+
+
+
+
+///================================================
+/// TEST CODE
+///================================================
+
+var tags = {
+    title: "Playing with Fire",
+    artist: "Ronald Jenkees",
+    album: "Disorganized Fun",
+}
+
+// let url = 'https://www.youtube.com/watch?v=X6X9WWte3nQ';
+let url = 'https://www.youtube.com/watch?v=0O2aH4XLbto';
+
+downloadFromUrl(url, 0)
+    .then(
+        (res) => {
+            console.log(_.omit(res, ['formats']));
+            return res;
+        },
+        (err) => {
+            console.log(err);
+        }
+    )
+    .then(
+        (res) => {
+            setID3Tags(tags, './' + res.title + '.mp3');
+            return res;
+        },
+        (err) => {}
+    )
+    .then(
+        (res) => {
+            return getID3Tags('./' + res.title + '.mp3');
+        },
+        (err) => {}
+    ).then(
+        (res) => {
+            console.log(res);
+        },
+        (err) => {}
+    );
