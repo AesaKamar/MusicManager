@@ -15,6 +15,7 @@ const ipc = electron.ipcMain;
 const _ = require('lodash');
 const Promise = require('bluebird');
 const fs = require('fs');
+const path = require('path');
 const ytdl = require('youtube-dl');
 const ffmpeg = require('fluent-ffmpeg');
 const id3Reader = require('id3js');
@@ -29,7 +30,7 @@ app.on('ready', () => {
         height: 900,
         width: 1600
     });
-    mainWindow.loadURL('file://' + __dirname + '/main/main.html');
+    mainWindow.loadURL(path.join('file:', __dirname, 'views', 'main.html'));
     mainWindow.on('closed', () => { mainWindow = null; });
 });
 
@@ -135,31 +136,31 @@ var tags = {
 // let url = 'https://www.youtube.com/watch?v=X6X9WWte3nQ';
 let url = 'https://www.youtube.com/watch?v=0O2aH4XLbto';
 
-downloadFromUrl(url, 0)
-    .then(
-        (res) => {
-            console.log(_.omit(res, ['formats']));
-            return res;
-        },
-        (err) => {
-            console.log(err);
-        }
-    )
-    .then(
-        (res) => {
-            setID3Tags(tags, './' + res.title + '.mp3');
-            return res;
-        },
-        (err) => {}
-    )
-    .then(
-        (res) => {
-            return getID3Tags('./' + res.title + '.mp3');
-        },
-        (err) => {}
-    ).then(
-        (res) => {
-            console.log(res);
-        },
-        (err) => {}
-    );
+// downloadFromUrl(url, 0)
+//     .then(
+//         (res) => {
+//             console.log(_.omit(res, ['formats']));
+//             return res;
+//         },
+//         (err) => {
+//             console.log(err);
+//         }
+//     )
+//     .then(
+//         (res) => {
+//             setID3Tags(tags, './' + res.title + '.mp3');
+//             return res;
+//         },
+//         (err) => {}
+//     )
+//     .then(
+//         (res) => {
+//             return getID3Tags('./' + res.title + '.mp3');
+//         },
+//         (err) => {}
+//     ).then(
+//         (res) => {
+//             console.log(res);
+//         },
+//         (err) => {}
+//     );

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <!--Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="description" content="Aesa Kamar">
+    <meta name="author" content="Music App">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Asset Includes-->
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="../../node_modules/angular-material/angular-material.min.css">
+    <script>
+        require('./app');
+        require('./routes.js');
+        require('./main.controller.js');
+    </script>
+</head>
+
+<body ng-cloak ng-controller="MainController as vm" layout="column">
+    <md-toolbar>
+        <h1>Hello</h1>
+    </md-toolbar>
+    <div class="container" layout="row" flex>
+        <md-sidenav md-is-locked-open="true" md-component-id="left" md-disable-backdrop md-whiteframe="4">
+            <md-list>
+                <md-list-item class="md-3-line" ng-click="vm.goTo('download')">
+                    <md-icon md-font-set="material-icons" class="md-48">
+                        cloud_download
+                    </md-icon>
+                    <div class="md-list-item-text" layout="column">
+                        <h2>Download</h2>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-3-line" ng-click="vm.goTo('library')">
+                    <md-icon md-font-set="material-icons" class="md-48">
+                        library_music
+                    </md-icon>
+                    <div class="md-list-item-text" layout="column">
+                        <h2>Library</h2>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-3-line" ng-click="vm.goTo('sync')">
+                    <md-icon md-font-set="material-icons" class="md-48">
+                        sync
+                    </md-icon>
+                    <div class="md-list-item-text" layout="column">
+                        <h2>Sync</h2>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-sidenav>
+        <md-content flex>
+            <div ui-view></div>
+        </md-content>
+    </div>
+</body>
+
+</html>
